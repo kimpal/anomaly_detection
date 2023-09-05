@@ -1,0 +1,12 @@
+services:
+  anomaly-detectoin:
+    container_name: anomaly-detection
+    build:
+      context: ./anomaly-detection-main
+      dockerfile: ./Dockerfile
+    volumes:
+    - .:/usr/src:/
+    ports:
+    - "8080:8080"
+    image: anomaly-detection
+    command: uvicorn anomaly-detection-main.app.main:app --host 0.0.0.0 --port 8080 --reload
