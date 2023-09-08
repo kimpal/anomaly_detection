@@ -3,28 +3,27 @@
 
 <p> This dataset has nine types of attacks, namely, Fuzzers, Analysis, Backdoors, DoS, Exploits, Generic, Reconnaissance, Shellcode and Worms. The Argus, Bro-IDS tools are used and twelve algorithms are developed to generate totally 49 features with the class label. These features are described in UNSW-NB15_features.csv file.</p>
 
-# two ways of setting up a envierment and instal requered pacages
 
-## to runn whit out Docker pip install --no-cache-dir --upgrade -r requerments.txt
-1. install all dependency: # not tested
-`pip install --upgrade pip && pip install --no-cache-dir --upgrade -r requerments.txt`
+# Two ways of setting up a envierment and instal all requered pacages:
+1. whit out docker
+2. whit docker
 
-1. installing all dependency whit: 
-`pip install --no-cache-dir --upgrade -r requermnt.txt` # not testted
-2. thna first runn the pre-prosessing script in the dir /Pre-prosessing
-to generate the nesesary csv files to runn the models
+## 1 to runn whit out Docker and istall all dependency:
+1. Installing all dependency:  `pip install --no-cache-dir --upgrade -r requerments.txt` or `pip install --upgrade pip && pip install --no-cache-dir --upgrade -r requerments.txt`
+2. Thna first runn the pre-prosessing script in the dir /Pre-prosessing whit `python3 pre_prosessing_filename.py`
+to generate the nesesary csv files to runn the models alw whit `python3 models_pythonfil_name.py`
 
-
-## Run instructions To runn it whit docker 
-1. Te instruction asuming docker is already installed on windows computer docker desktop is recomanded
-2. how to install docker desktop on windows https://docs.docker.com/desktop/install/windows-install/
-3. On oter systems refer to: https://docs.docker.com/get-docker/
+## To runn it with docker:
+1. Te instruction asuming docker is already installed on windows computer, docker desktop is recomanded
+2. how to install docker desktop on windows [docker.com/desktop/install/windows-install](https://docs.docker.com/desktop/install/windows-install/)
+3. On oter systems refer to: [docker.com/get-docker](https://docs.docker.com/get-docker/)
 4. After install fowo the instruction below to runn it and enter the shel wher the amomaly-detection-main file is
-# To start the contianeer and enter it runn:
+### To start the contianeer and enter it runn:
 1. `docker compose up --detach`
 2. `docker exec -it anomaly-detection /bin/bash`
-# To exit the docker dontainer type: exit
-# to sut down the docker container runn: 
+### To exit the docker container type: `exit`
+### to shut down the docker container runn: 
 `docker compose down`
 
-# to runn python scrips: python3 file_name
+### to runn python scrips: 
+`python3 file_name.py`
