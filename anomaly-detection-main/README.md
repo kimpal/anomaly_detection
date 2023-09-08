@@ -8,12 +8,12 @@
 1. whit out docker
 2. whit docker
 
-## 1. to runn whit out Docker and istall all dependency:
+## 1. Runn whit **out** Docker and istall all dependency:
 1. Installing all dependency:  `pip install --no-cache-dir --upgrade -r requerments.txt` or `pip install --upgrade pip && pip install --no-cache-dir --upgrade -r requerments.txt`
 2. Thna first runn the pre-prosessing script in the dir /Pre-prosessing whit `python3 pre_prosessing_filename.py`
 to generate the nesesary csv files to runn the models alw whit `python3 models_pythonfil_name.py`
 
-## 2. To runn it with docker:
+## 2. Runn with docker:
 1. Te instruction asuming docker is already installed on windows computer, docker desktop is recomanded
 2. how to install docker desktop on windows [docker.com/desktop/install/windows-install](https://docs.docker.com/desktop/install/windows-install/)
 3. On oter systems refer to: [docker.com/get-docker](https://docs.docker.com/get-docker/)
