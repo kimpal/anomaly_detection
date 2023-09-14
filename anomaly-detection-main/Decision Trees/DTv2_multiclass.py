@@ -5,7 +5,7 @@
 import time
 import sys
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_XY_MULTI, DF_preprocessed_traintest_multi
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
@@ -33,21 +33,35 @@ y_test_multi = test_multi.loc[:, ['attack_cat']]
 print("first model starts...")
 clg = DecisionTreeClassifier()
 clg = clg.fit(X_train_multi, y_train_multi)
-y_pred_multi = clg.predict(X_test_multi)
+y_pred_train_multi = clg.predict(X_train_multi) # train prediction
+y_pred_test_multi = clg.predict(X_test_multi) # test prediction
 
+# train result
+accuracy_train = round(metrics.accuracy_score(y_train_multi, y_pred_train_multi), 5)
+f1_train = round(metrics.f1_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
+precision_train = round(metrics.precision_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
+recall_train = round(metrics.recall_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
 
-accuracy = round(metrics.accuracy_score(y_test_multi, y_pred_multi), 5)
-f1 = round(metrics.f1_score(y_test_multi, y_pred_multi, average='weighted'), 5)
-precision = round(metrics.precision_score(y_test_multi, y_pred_multi, average='weighted'), 5)
-recall = round(metrics.recall_score(y_test_multi, y_pred_multi, average='weighted'), 5)
+# test result
+accuracy = round(metrics.accuracy_score(y_test_multi, y_pred_test_multi), 5)
+f1 = round(metrics.f1_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
+precision = round(metrics.precision_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
+recall = round(metrics.recall_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
 
-print("Accuracy Score: \t", accuracy)
-print("F1 Score: \t\t", f1)
-print("Precision Score: \t", precision)
-print("Recall Score: \t\t", recall)
+# printing test accuracy
+print("Accuracy train Score: \t", accuracy_train)
+print("Accuracy test Score: \t", accuracy)
+print("F1 train Score: \t\t", f1_train)
+print("F1 test Score: \t\t", f1)
+print("Precision test Score: \t", precision_train)
+print("Precision test Score: \t", precision)
+print("Recall test Score: \t\t", recall)
 print("------------------------------------------------")
-print("Classification report: ")
-print(metrics.classification_report(y_test_multi, y_pred_multi))
+print("Classification test report: ")
+print(metrics.classification_report(y_test_multi, y_pred_test_multi))
+"""
+
+
 
 # In[9]:
 
@@ -55,38 +69,51 @@ print(metrics.classification_report(y_test_multi, y_pred_multi))
 print("------------------------------------")
 print("next model starts")
 # second model
-clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=20, min_samples_split=25, max_features=45, ccp_alpha=0.0000002)
+clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=20, min_samples_split=13, max_features=45 ,ccp_alpha=0.0) #splitter="best")  #ccp_alpha=0.0000002) # test whit ccp_alpha=0.0
 clf = clf.fit(X_train_multi, y_train_multi)
-y_pred = clf.predict(X_test_multi)
+y_pred_train_multi = clf.predict(X_train_multi)
+y_pred_test_multi = clf.predict(X_test_multi)
 
+# train scores
+train_accuracy = round(metrics.accuracy_score(y_train_multi, y_pred_train_multi), 5)
+train_f1 = round(metrics.f1_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
+train_precision = round(metrics.precision_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
+train_recall = round(metrics.recall_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
 
-accuracy = round(metrics.accuracy_score(y_test_multi, y_pred_multi), 5)
-f1 = round(metrics.f1_score(y_test_multi, y_pred_multi, average='weighted'), 5)
-precision = round(metrics.precision_score(y_test_multi, y_pred_multi, average='weighted'), 5)
-recall = round(metrics.recall_score(y_test_multi, y_pred_multi, average='weighted'), 5)
+# test scores
+accuracy = round(metrics.accuracy_score(y_test_multi, y_pred_test_multi), 5)
+f1 = round(metrics.f1_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
+precision = round(metrics.precision_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
+recall = round(metrics.recall_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
 
-print("Accuracy Score: \t", accuracy)
-print("F1 Score: \t\t", f1)
-print("Precision Score: \t", precision)
-print("Recall Score: \t\t", recall)
+print("Accuracy train Score: \t", train_accuracy)
+print("Accuracy test Score: \t", accuracy)
+print("F1 train Score: \t\t", train_f1)
+print("F1 test Score: \t\t", f1)
+print("Precision train Score: \t", train_precision)
+print("Precision test Score: \t", train_precision)
+print("Recall train Score: \t\t", train_recall)
+print("Recall test Score: \t\t", recall)
 print("------------------------------------------------")
-print("Classification report: ")
-print(metrics.classification_report(y_test_multi, y_pred_multi))
-"""
+#print("Classification test report: ")
+#print(metrics.classification_report(y_test_multi, y_pred_test_multi))
 
 
 # In[34]:
-
+"""
 # grid search
 
 print("grid search start...")
-params = {"criterion":["gini","entropy"],
-          "min_samples_split": range(2,150),
-          "min_samples_leaf": range(1,100),
+params = {"criterion":["entropy", "gini"], #"gini","entropy"
+          #"min_samples_split": range(2,150),
+          "min_samples_split": [13],
+          #"min_samples_leaf": range(1,100),
+          "min_samples_leaf": [42],
           "splitter":["best", "random"],
           "max_depth":[None],
           "min_weight_fraction_leaf":[0.0],
-          "max_features":["auto", "sqrt", "log2",None],
+          #"max_features":["auto", "sqrt", "log2",None],
+          "max_features":["sqrt", "log2",None],
           "random_state":[None],
           "max_leaf_nodes":[None],
           "min_impurity_decrease":[0.0],
@@ -99,7 +126,6 @@ gs = GridSearchCV(estimator=clf, param_grid=params,
                 n_jobs=-1, cv=5, error_score='raise')
 gs.fit(X_train_multi, y_train_multi)
 
-gs.best_params_
 
 gs.best_estimator_.fit(X_train_multi, y_train_multi)
 y_pred_train_multi = gs.best_estimator_.predict(X_train_multi)
@@ -112,10 +138,13 @@ print(gs.best_estimator_)
 print(gs.best_score_)
 print("Accuracy train", metrics.accuracy_score(y_train_multi, y_pred_train_multi))
 print("Accuracy test", metrics.accuracy_score(y_test_multi, y_pred_test_multi))
+f1_weighted_train = round(metrics.f1_score(y_train_multi, y_pred_train_multi, average='weighted'), 5)
 f1_weighted = round(metrics.f1_score(y_test_multi, y_pred_test_multi, average='weighted'), 5)
-
+print("test_f1",f1_weighted_train)
+print("test_f1",f1_weighted)
 
 # In[11]:
+"""
 
 #last model
 """"
