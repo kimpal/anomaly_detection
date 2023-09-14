@@ -14,12 +14,9 @@ __pycache__/
 
 # C extensions
 *.so
-
-# Dataset
-/Dataset
 #to ig files
 /Data*Analysis
-.csv
+*.csv
 
 # Distribution / packaging
 .Python
