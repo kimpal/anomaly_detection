@@ -18,6 +18,7 @@ from sklearn.preprocessing import StandardScaler
 #--------code to select dataset on multi_class-----------#
 #desiding on The On_hot_encoding or the on_hot_labeling
 # ENCODING
+
 encoding = False # if True encoding. if False labeling
 train_on_hot_encoding = '../Dataset/train_ppMULT_on_hot.csv'
 test_on_hot_encoding = '../Dataset/test_ppMULT_on_hot.csv'
@@ -33,9 +34,6 @@ else:
     print("one hot labeling dataset is activated")
     train_dataset = train_on_hot_labeling
     test_dataset = test_on_hot_labeling
-
-print(f"Train Dataset: {train_dataset} is used!")
-print(f"Test Dataset: {test_dataset} is used!")
 #----------------------------------------------#
 #------end of selection dataset code-----------#
 
@@ -83,6 +81,7 @@ def DF_XY():
 # 1. When importing libraries, call for the file with: from UNSW_DF import *
 # 2. Initiate with: x_train_multi, x_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
 def DF_XY_MULTI():
+    
     """Loads preprocessed dataset files from pre-defined path, and splits into inputs and output.
 
     Returns:
@@ -90,6 +89,8 @@ def DF_XY_MULTI():
     """
     try:
         print("( 1 ) Reading Preprocessed CSV files..")
+        print(f"Train Dataset: {train_dataset} is used!")
+        print(f"Test Dataset: {test_dataset} is used!")
         train_multi = pd.read_csv(train_dataset) # selected in code started line 17 if els
         print("\t Training dataset loaded..")
         test_multi = pd.read_csv(test_dataset) # selected in code started line 17 if els
@@ -127,6 +128,8 @@ def DF_preprocessed_traintest_multi():
     print("Reading Preprocessed CSV Files..")
     train_multi = pd.read_csv(train_dataset) # selected in code started line 17 if els
     test_multi = pd.read_csv(test_dataset) # selected in code start at line 17 if els
+    print(f"Train Dataset: {train_dataset} is used!")
+    print(f"Test Dataset: {test_dataset} is used!")
     print('\t Train Shape: ', '\t', train_multi.shape)
     print('\t Test Shape: ', '\t', test_multi.shape)
     print("Dataset Loaded!")
