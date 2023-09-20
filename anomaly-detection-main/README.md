@@ -9,8 +9,9 @@
 2. whit Docker
 
 ## 1. Runn normal and istall all dependency:
-1. Installing all dependency:  `pip install --no-cache-dir --upgrade -r requerments.txt` or `pip install --upgrade pip && pip install --no-cache-dir --upgrade -r requerments.txt`
-2. Thna first runn the pre-prosessing script in the dir /Pre-prosessing whit `python3 pre_prosessing_filename.py`
+1. Make sure to be in the directry wher the requerments.txt file is
+2. Installing all dependency:  `pip install --no-cache-dir --upgrade -r requerments.txt` or `pip install --upgrade pip && pip install --no-cache-dir --upgrade -r requerments.txt` or `pip install -r requerments.txt` 
+3. Thna first runn the pre-prosessing script in the dir /Pre-prosessing whit `python3 pre_prosessing_filename.py`
 to generate the nesesary csv files to runn the models alw whit `python3 models_pythonfil_name.py`
 
 ## 2. Runn with Docker:
