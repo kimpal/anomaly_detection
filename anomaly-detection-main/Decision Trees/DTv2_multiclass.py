@@ -69,7 +69,7 @@ print(metrics.classification_report(y_test_multi, y_pred_test_multi))
 print("------------------------------------")
 print("next model starts")
 # second model
-clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=20, min_samples_split=13, max_features=45 ,ccp_alpha=0.0) #splitter="best")  #ccp_alpha=0.0000002) # test whit ccp_alpha=0.0
+clf = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=20, min_samples_split=13, max_features=45, ccp_alpha=0.0) #splitter="best")  #ccp_alpha=0.0000002) # test whit ccp_alpha=0.0
 clf = clf.fit(X_train_multi, y_train_multi)
 y_pred_train_multi = clf.predict(X_train_multi)
 y_pred_test_multi = clf.predict(X_test_multi)
