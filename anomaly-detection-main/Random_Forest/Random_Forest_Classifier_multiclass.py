@@ -11,7 +11,7 @@ import sys
 from sklearn.metrics import accuracy_score
 
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_XY_MULTI
 from sklearn import metrics
 # importing random forest classifier from assemble module
 from sklearn.model_selection import cross_val_score
@@ -23,8 +23,14 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import export_graphviz
 from IPython.display import Image
 import graphviz
+from sklearn.metrics import roc_auc_score, roc_curve, precision_score, recall_score, f1_score, accuracy_score
+import shap
+from plotly.offline import init_notebook_mode, iplot
+#shap.initjs()
 X_train_multi, X_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
 
+#mapping=dict( zip( X_train_multi['attack_cat'].cat.codes, X_train_multi['attack_cat'] ) )
+#mapping
 # importing Dataset
 #train_multi, test_multi = DF_preprocessed_traintest_multi()
 start_time = time.time()
@@ -102,6 +108,10 @@ model.fit(X_train_multi, y_train_multi)
 y_pred_train = model.predict(X_train_multi)
 y_pred_test = model.predict(X_test_multi)
 
+# analyzing the features used to make predictions
+#explainer = shap.TreeExplainer(model)
+#shap_values = explainer.shap_values(X_train_multi)
+#shap.summary_plot(shap_values, X_train_multi.values, plot_type="bar", class_names= mapping, feature_names = X_train_multi.columns)
 
 """
 train_accuracy = round(metrics.accuracy_score(y_train_multi, y_pred_train), 5)
