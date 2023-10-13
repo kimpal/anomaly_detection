@@ -2,16 +2,11 @@
 # coding: utf-8
 
 # In[18]:
-
-
 import pandas as pd
 import numpy as np
+from matplotlib import pyplot
 from xgboost import XGBClassifier
-from sklearn.metrics import accuracy_score
-
-
-# In[19]:
-
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, ConfusionMatrixDisplay
 
 train = pd.read_csv("../Dataset/train_pp3_multi.csv")
 test = pd.read_csv("../Dataset/test_pp3_multi.csv")
@@ -23,39 +18,21 @@ print('y_train Shape: ', '\t', y_train.shape)
 print('X_test Shape: ', '\t\t', x_test.shape)
 print('y_test Shape: ', '\t\t', y_test.shape)
 
-
-# In[20]:
-
-
 model = XGBClassifier()
-
-
-# In[21]:
-
-
 model.fit(x_train, y_train)
-
-
-# In[22]:
-
-
 print(model)
 
-
-# In[23]:
+# evaluate the model
 y_pred_train = model.predict(x_train)
-predictions_train = [round(value) for value in y_pred_train]
-
-y_pred = model.predict(x_test)
-predictions = [round(value) for value in y_pred]
-
-
-# In[24]:
-
-
-# evaluate predictions
-accuracy_train = accuracy_score(y_train, predictions_train)
-print("Accuracy: %.2f%%" % (accuracy_train * 100.0))
-accuracy_test = accuracy_score(y_test, predictions)
-print("Accuracy: %.2f%%" % (accuracy_test * 100.0))
-
+y_pred_test = model.predict(x_test)
+train_accuracy = round(accuracy_score(y_train, y_pred_train),5)
+test_accuracy = round(accuracy_score(y_test, y_pred_test),)
+print(f"Training accuracy: {train_accuracy*100}\nTest accuracy: \t {test_accuracy*100}")
+# clasification report code
+print(classification_report(y_test, y_pred_test))
+# Create the confusion matrix
+cm = confusion_matrix(y_test, y_pred_test)
+print("confusion matrix:")
+ConfusionMatrixDisplay(confusion_matrix=cm).plot();
+pyplot.savefig('XGBoost_confusion_matrix.png')
+pyplot.show()
