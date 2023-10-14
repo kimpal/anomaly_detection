@@ -8,10 +8,11 @@ import pandas as pd
 import numpy as np
 import sys
 
+from matplotlib import pyplot
 from sklearn.metrics import accuracy_score
 
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_XY_MULTI
 from sklearn import metrics
 # importing random forest classifier from assemble module
 from sklearn.model_selection import cross_val_score
@@ -19,15 +20,11 @@ from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from scipy.stats import randint
 from sklearn.ensemble import RandomForestClassifier
-# Tree Visualisation
-from sklearn.tree import export_graphviz
-from IPython.display import Image
-import graphviz
+
 X_train_multi, X_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
 
 # importing Dataset
 #train_multi, test_multi = DF_preprocessed_traintest_multi()
-start_time = time.time()
 
 
 #dataframe = pd.merge(train_multi, test_multi)
@@ -103,16 +100,6 @@ y_pred_train = model.predict(X_train_multi)
 y_pred_test = model.predict(X_test_multi)
 
 
-"""
-train_accuracy = round(metrics.accuracy_score(y_train_multi, y_pred_train), 5)
-test_accuracy = round(metrics.accuracy_score(y_test_multi, y_pred_test), 5)
-f1 = round(metrics.f1_score(y_test_multi, y_pred_test), 5)
-precision = round(metrics.precision_score(y_test_multi, y_pred_test), 5)
-recall = round(metrics.recall_score(y_test_multi, y_pred_test), 5)
-
-print(f"Training accuracy: \t{train_accuracy}\nTest accuracy: \t\t{test_accuracy}\nF1-score: \t\t{f1}\nprecision-score: \t{precision}\nrecall-score: \t\t{recall}\n")
-"""
-
 train_accuracy = accuracy_score(y_train_multi, y_pred_train)
 test_accuracy = accuracy_score(y_test_multi, y_pred_test)
 f1 = round(metrics.f1_score(y_test_multi, y_pred_test, average='weighted'), 5)
@@ -137,10 +124,13 @@ print(f"Training accuracy: \t{train_accuracy}\nTest accuracy: \t\t{test_accuracy
 print(f"Macro F1-score: \t{macro_f1}\nMicro F1-score: \t{micro_f1}\nWeighted F1-score: \t{weighted_f1}")
 print(f"Macro precision: \t{macro_precision}\nMicro precision: \t{micro_precision}\nWeighted precision: \t{weighted_precision}")
 print(f"Macro recall: \t\t{macro_recall}\nMicro recall: \t\t{micro_recall}\nWeighted recall: \t{weighted_recall}")
-
-
+print("Classification report on test: ")
+print(metrics.classification_report(y_test_multi, y_pred_test))
+# Create the confusion matrix
+cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
+metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
+pyplot.savefig('RFC_confusion_matrix.png')
+pyplot.show()
 
 elapsed_time = round((time.time() - start_time), 3)
 print(f"Runtime: {elapsed_time}s")
-
-
