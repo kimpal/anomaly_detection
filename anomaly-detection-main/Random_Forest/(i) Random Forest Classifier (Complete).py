@@ -10,7 +10,7 @@ import pandas as pd
 import numpy as np
 import sys
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_XY, DF_preprocessed_traintest
 
 # importing random forest classifier from assemble module
 from sklearn.model_selection import cross_val_score
