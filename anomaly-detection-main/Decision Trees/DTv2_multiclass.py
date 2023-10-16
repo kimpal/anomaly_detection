@@ -5,6 +5,9 @@
 from matplotlib import pyplot
 import time
 import sys
+
+from sklearn.feature_selection import SelectFromModel
+
 sys.path.append("..")
 from Functions.UNSW_DF import DF_XY_MULTI, DF_preprocessed_traintest_multi
 import pandas as pd
@@ -12,7 +15,7 @@ import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import RandomizedSearchCV, GridSearchCV
 from sklearn import tree
-from sklearn.metrics import accuracy_score, confusion_matrix
+from sklearn.metrics import accuracy_score
 from sklearn import metrics
 x_train_multi, x_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
 
@@ -168,7 +171,7 @@ pyplot.show()
 """
 
 #last model
-#"""
+"""
 clf_ = tree.DecisionTreeClassifier(criterion="entropy", min_samples_leaf=19, min_samples_split=10, max_features=45, splitter='best',ccp_alpha=0.0000002)
 clf_.fit(X_train_multi,y_train_multi)
 y_train_pred_multi = clf_.predict(X_train_multi)
@@ -198,7 +201,69 @@ print(metrics.classification_report(y_test_multi, y_test_pred_multi))
 cm = metrics.confusion_matrix(y_test_multi, y_test_pred_multi)
 metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot();
 pyplot.show()
+"""
+
 #"""
+#Bace line test on Decision Tree Before test on feature selection
+print(X_train_multi.shape)
+# fit the model
+DT_model = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=20, min_samples_split=13, max_features=45 ,ccp_alpha=0.0)
+DT_model.fit(X_train_multi, y_train_multi)
+# evaluate the model
+print(DT_model)
+y_pred_train = DT_model.predict(X_train_multi)
+y_pred_test = DT_model.predict(X_test_multi)
+train_accuracy = round(accuracy_score(y_train_multi, y_pred_train),5)
+test_accuracy = round(accuracy_score(y_test_multi, y_pred_test),5)
+print(f"Training accuracy: {train_accuracy*100}\nTest accuracy: \t {test_accuracy*100}")
+# classification report code
+print(metrics.classification_report(y_test_multi, y_pred_test))
+# Create the confusion matrix
+cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
+print("confusion matrix:")
+metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
+pyplot.show()
+#"""
+
+
+"""
+# evaluation of Decision tre using features whit threshold=0.006 on different feature selection methods
+# feature selection
+def select_features(x_train, y_train, x_test):
+	# configure to select a subset of features whit rf
+	#fs = SelectFromModel(RandomForestClassifier(n_estimators=16), threshold=0.006) #max_features=50 )
+	# configure to select a subset of features whit XGBOoST
+	#fs = SelectFromModel(XGBClassifier(), threshold=0.006) #max_features=50 )
+	# configure to select a subset of feature whit Decision Tree feature
+	fs = SelectFromModel(DecisionTreeClassifier(), threshold=0.006) #max_features=50 ) DecisionTreeClassifier
+	# learn relationship from training data
+	fs.fit(x_train, y_train)
+	# transform train input data
+	x_train_fs = fs.transform(x_train)
+	# transform test input data
+	x_test_fs = fs.transform(x_test)
+	return x_train_fs, x_test_fs, fs
+# feature selection
+x_train_fs, x_test_fs, fs = select_features(X_train_multi, y_train_multi, X_test_multi)
+print(x_train_fs.shape)
+# fit the model
+DT_model = DecisionTreeClassifier(criterion="entropy", min_samples_leaf=20, min_samples_split=13, max_features=45 ,ccp_alpha=0.0)
+DT_model.fit(x_train_fs, y_train_multi)
+# evaluate the model
+print(DT_model)
+y_pred_train = DT_model.predict(x_train_fs)
+y_pred_test = DT_model.predict(x_test_fs)
+train_accuracy = round(accuracy_score(y_train_multi, y_pred_train),5)
+test_accuracy = round(accuracy_score(y_test_multi, y_pred_test),5)
+print(f"Training accuracy: {train_accuracy*100}\nTest accuracy: \t {test_accuracy*100}")
+# classification report code
+print(metrics.classification_report(y_test_multi, y_pred_test))
+# Create the confusion matrix
+cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
+print("confusion matrix:")
+metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
+pyplot.show()
+"""
 
 # end time of the model
 elapsed_time = round((time.time() - start_time), 3)
