@@ -9,7 +9,10 @@ import numpy as np
 import sys
 
 from matplotlib import pyplot
+from sklearn.feature_selection import SelectFromModel
 from sklearn.metrics import accuracy_score
+from sklearn.tree import DecisionTreeClassifier
+from xgboost import XGBClassifier
 
 sys.path.append("..")
 from Functions.UNSW_DF import DF_XY_MULTI
@@ -78,6 +81,7 @@ preds_train=clf.predict(X_train_multi)
 print_scores(y_test_multi,pred,y_train_multi,preds_train)
 """
 
+"""
 # test min_samples_split: 1.0
 params = {"criterion": "entropy",
               "bootstrap":True,
@@ -131,6 +135,68 @@ cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
 metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
 pyplot.savefig('RFC_confusion_matrix.png')
 pyplot.show()
+"""
+
+"""
+# Random forest baseline with no feature selection
+# fit the model
+print(X_train_multi.shape)
+RF_model = RandomForestClassifier(n_estimators=16, max_depth=17, criterion="entropy", bootstrap=True, min_samples_split=2, min_samples_leaf=1)
+RF_model.fit(X_train_multi, y_train_multi)
+print(RF_model)
+# evaluate the model
+y_pred_train = RF_model.predict(X_train_multi)
+y_pred_test = RF_model.predict(X_test_multi)
+train_accuracy = round(accuracy_score(y_train_multi, y_pred_train),5)
+test_accuracy = round(accuracy_score(y_test_multi, y_pred_test),5)
+print(f"Training accuracy: {train_accuracy*100}\nTest accuracy: \t {test_accuracy*100}")
+# classification report code
+print(metrics.classification_report(y_test_multi, y_pred_test))
+# Create the confusion matrix
+cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
+print("confusion matrix:")
+metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
+pyplot.show()
+"""
+
+#"""
+# evaluation random forest model using threshold=0.006 Feature chose whit different models
+# feature selection
+def select_features(x_train, y_train, x_test):
+	# configure to select a subset of features whit rf
+	fs = SelectFromModel(RandomForestClassifier(n_estimators=16), threshold=0.006)
+	# configure to select a subset of features whit XGBOoST
+	#fs = SelectFromModel(XGBClassifier(), threshold=0.006)
+	# configure to select a subset of feature whit Decision Tree feature
+	#fs = SelectFromModel(DecisionTreeClassifier(), threshold=0.006)
+	# learn relationship from training data
+	fs.fit(x_train, y_train)
+	# transform train input data
+	x_train_fs = fs.transform(x_train)
+	# transform test input data
+	x_test_fs = fs.transform(x_test)
+	return x_train_fs, x_test_fs, fs
+# feature selection
+x_train_fs, x_test_fs, fs = select_features(X_train_multi, y_train_multi, X_test_multi)
+print(x_train_fs.shape)
+# fit the model
+RF_model = RandomForestClassifier(n_estimators=16, max_depth=17, criterion="entropy", bootstrap=True, min_samples_split=2, min_samples_leaf=1)
+RF_model.fit(x_train_fs, y_train_multi)
+print(RF_model)
+# evaluate the model
+y_pred_train = RF_model.predict(x_train_fs)
+y_pred_test = RF_model.predict(x_test_fs)
+train_accuracy = round(accuracy_score(y_train_multi, y_pred_train),5)
+test_accuracy = round(accuracy_score(y_test_multi, y_pred_test),5)
+print(f"Training accuracy: {train_accuracy*100}\nTest accuracy: \t {test_accuracy*100}")
+# classification report code
+print(metrics.classification_report(y_test_multi, y_pred_test))
+# Create the confusion matrix
+cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
+print("confusion matrix:")
+metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
+pyplot.show()
+#"""
 
 elapsed_time = round((time.time() - start_time), 3)
 print(f"Runtime: {elapsed_time}s")
