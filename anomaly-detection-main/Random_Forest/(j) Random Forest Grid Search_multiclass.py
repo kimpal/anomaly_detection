@@ -7,9 +7,10 @@
 from sklearn.model_selection import GridSearchCV
 from sklearn.ensemble import RandomForestClassifier
 import numpy as np
-import sys 
+import sys
+import pandas as pd
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_XY_MULTI
 
 
 X_train_multi, X_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
@@ -49,14 +50,14 @@ def evaluate_tr(model, y_train_multi, X_train_multi):
 print("grid search start...")
 param_grid = {
     'bootstrap': [True],
-    'max_depth': [14],
+    'max_depth': [9,],#14,15,16],#17,18,19],
     'max_features':["sqrt", "log2", None],
-    'min_samples_leaf': [1, 2, 3, 4, 5],
+    'min_samples_leaf': [1],#, 2, 3, 4, 5],
     #'min_samples_leaf': [1],
-    'min_samples_split': [2, 4, 6, 8, 10],
+    'min_samples_split': [2],# 4, 6, 8, 10],
     #'min_samples_split': [2],
-    'n_estimators': [100, 200, 300, 500, 1000],
-    #'n_estimators': [100, 200],
+    #'n_estimators': [100, 200, 300, 500, 1000],
+    'n_estimators': [14],#10,11,12,13,14],#,15,16,17,18,19,20,21],
     'criterion':["gini", "entropy", "log_loss"],
     'min_weight_fraction_leaf':[0.0],
     'max_leaf_nodes':[None],
