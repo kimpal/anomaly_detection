@@ -5,7 +5,7 @@
 import time
 import sys
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_XY, DF_preprocessed_traintest
 import pandas as pd
 import numpy as np
 from sklearn.tree import DecisionTreeClassifier
