@@ -16,6 +16,8 @@ from sklearn import metrics
 # 1. Reading Train and test dataset.
 # 2. Check if dataset is reversed.
 # 3. Drop 'id', and 'attack_cat' columns.
+saveTrain = '../Dataset/train_label_multi_10_classes.csv'
+saveTest = '../Dataset/test_label_multi_10_classes.csv'
 def import_train_test():
     #train = pd.read_csv('../../Anomaly-Detection-main/Dataset/UNSW_NB15_training-set.csv')
     #test = pd.read_csv('../../Anomaly-Detection-main//Dataset/UNSW_NB15_testing-set.csv')
@@ -35,13 +37,14 @@ def import_train_test():
         # creating instance of labelencoder
         labelencoder = LabelEncoder()
         # Assigning numerical values to the column whit data type object and storing it in the same column
-        #df['attack_cat'] = labelencoder.fit_transform(df['attack_cat'])
+        df['attack_cat'] = labelencoder.fit_transform(df['attack_cat'])
         df['proto'] = labelencoder.fit_transform(df['proto'])
         df['service'] = labelencoder.fit_transform(df['service'])
         df['state'] = labelencoder.fit_transform(df['state'])
         df['sport'] = labelencoder.fit_transform(df['sport']) # only present in large dataset
         df['dstip'] = labelencoder.fit_transform(df['dstip']) # only present in large dataset
         df['dsport'] = labelencoder.fit_transform(df['dsport']) # only present in large dataset
+        df['srcip'] = labelencoder.fit_transform(df['srcip'])
         for col in drop_cols:
             if col in df.columns:
                 print('Dropping: ', col)
@@ -87,7 +90,7 @@ def get_cat_columns(train):
 # Importing train test by using the function
 train, test = import_train_test()
 
-print("line78: train shap: ",train.shape)
+print("line93: train shap: ",train.shape)
 
 # To check if train and test datasets inhibits missing values
 print(train.isnull().sum())
@@ -103,17 +106,17 @@ print(test.dtypes)
 x_train, y_train = train.drop(['attack_cat'], axis=1), train['attack_cat']
 x_test, y_test = test.drop(['attack_cat'], axis=1), test['attack_cat']
 # Running the inputs into the feature_engineer function
-x_train, x_test = x_train, x_test #feature_engineer(x_train), feature_engineer(x_test) #train, test
+#x_train, x_test = feature_engineer(x_train), feature_engineer(x_test) #train, test
 
-print("line96 train shap: ",train.shape)
-print("linex97 x_train shap ",x_train.shape)
-# Getting the categorical and non categorical columns
+print("line111 train shap: ",train.shape)
+print("linex112 x_train shap ",x_train.shape)
+# Getting the categorical and non-categorical columns
 categorical_columns = get_cat_columns(x_train)
 non_categorical_columns = [x for x in x_train.columns if x not in categorical_columns]
-
+print("all categorical_columns: \n",categorical_columns)
 
 print(x_train.head())
-print("linex118 x_train shap ",x_train.dtypes)
+print("linex119 x_train shap ",x_train.dtypes)
 
 
 # Using standard scaler to normalize data on non categorical columns
@@ -122,7 +125,7 @@ x_train[non_categorical_columns] = scaler.fit_transform(x_train[non_categorical_
 x_test[non_categorical_columns] = scaler.transform(x_test[non_categorical_columns])
 
 
-print("linex118 x_train datatype ",x_train.dtypes)
+print("linex128 x_train datatype ",x_train.dtypes)
 print(x_train.head())
 
 # consider removing
@@ -165,7 +168,11 @@ x_train['attack_cat'] = y_train
 x_test['attack_cat'] = y_test
 
 
-x_train.to_csv('../Dataset/train_pp3_multi.csv', index=False)
-x_test.to_csv('../Dataset/test_pp3_multi.csv', index=False)
+#x_train.to_csv('../Dataset/train_pp3_multi.csv', index=False)
+#x_test.to_csv('../Dataset/test_pp3_multi.csv', index=False)
+x_train.to_csv(saveTrain, index=False)
+x_test.to_csv(saveTest, index=False)
 
+print(x_train.dtypes)
+print(x_train['attack_cat'].unique())
 print("creating csv is done")

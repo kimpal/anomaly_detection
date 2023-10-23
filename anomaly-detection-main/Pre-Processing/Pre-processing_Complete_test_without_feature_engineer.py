@@ -42,6 +42,7 @@ def import_train_test():
         df['sport'] = labelencoder.fit_transform(df['sport']) # only present in large dataset
         df['dstip'] = labelencoder.fit_transform(df['dstip']) # only present in large dataset
         df['dsport'] = labelencoder.fit_transform(df['dsport']) # only present in large dataset
+        df['srcip'] = labelencoder.fit_transform(df['srcip']) # only present in large dataset
         for col in drop_cols:
             if col in df.columns:
                 print('Dropping: ', col)
@@ -87,7 +88,7 @@ def get_cat_columns(train):
 # Importing train test by using the function
 train, test = import_train_test()
 
-print("line78: train shap: ",train.shape)
+print("line91: train shap: ",train.shape)
 
 # To check if train and test datasets inhibits missing values
 print(train.isnull().sum())
@@ -105,15 +106,15 @@ x_test, y_test = test.drop(['label'], axis=1), test['label']
 # Running the inputs into the feature_engineer function
 x_train, x_test = x_train, x_test #feature_engineer(x_train), feature_engineer(x_test) #train, test
 
-print("line96 train shap: ",train.shape)
-print("linex97 x_train shap ",x_train.shape)
+print("line109 train shap: ",train.shape)
+print("linex110 x_train shap ",x_train.shape)
 # Getting the categorical and non categorical columns
 categorical_columns = get_cat_columns(x_train)
 non_categorical_columns = [x for x in x_train.columns if x not in categorical_columns]
 
 
 print(x_train.head())
-print("linex118 x_train shap ",x_train.dtypes)
+print("linex117 x_train shap ",x_train.dtypes)
 
 
 # Using standard scaler to normalize data on non categorical columns
@@ -122,7 +123,7 @@ x_train[non_categorical_columns] = scaler.fit_transform(x_train[non_categorical_
 x_test[non_categorical_columns] = scaler.transform(x_test[non_categorical_columns])
 
 
-print("linex118 x_train datatype ",x_train.dtypes)
+print("linex126 x_train datatype ",x_train.dtypes)
 print(x_train.head())
 
 # consider removing
