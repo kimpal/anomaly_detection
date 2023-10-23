@@ -23,8 +23,12 @@ encoding = False # if True encoding. if False labeling
 train_on_hot_encoding = '../Dataset/train_ppMULT_on_hot.csv'
 test_on_hot_encoding = '../Dataset/test_ppMULT_on_hot.csv'
 #LABELING
-train_on_hot_labeling = "../Dataset/train_pp3_multi.csv"
-test_on_hot_labeling = "../Dataset/test_pp3_multi.csv"
+#train_on_hot_labeling = "../Dataset/train_pp3_multi.csv" # only label encoding on attack_cat
+#test_on_hot_labeling = "../Dataset/test_pp3_multi.csv" # only label encoding on attack_cat
+train_on_hot_labeling = "../Dataset/train_label_multi_10_classes.csv"
+test_on_hot_labeling = "../Dataset/test_label_multi_10_classes.csv"
+#train_on_hot_labeling = "../Dataset/train_pp3_multi_labeled.csv" # label encoding on all catt values
+#test_on_hot_labeling = "../Dataset/test_pp3_multi_labeled.csv" # label encoding on all catt values
 # if statement to deside on_hot: label or encoding
 if encoding:
     print("one hot encoding dataset is activated")
@@ -106,14 +110,12 @@ def DF_XY_MULTI():
 
         print("( 3 ) Done!")
         print("PS! Import with: x_train_multi, x_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI")
-
-        #random forest and DT does not work when converted to flot Not sure way...
+        #random forest and DT doese not work when converted to flot Not sure way...
         #x_train_multi = np.asarray(x_train_multi).astype(np.float64)
         #y_train_multi = np.asarray(x_train_multi).astype(np.float64)
 
         #y_test_multi  = np.asaray(y_test_multi).astype(np.float64)
         #x_test_multi  = np.assary(x_test_multi).astype(np.float64)
-
     except:
         print("Could not load dataset, try again..")
     return x_train_multi, x_test_multi, y_train_multi, y_test_multi
