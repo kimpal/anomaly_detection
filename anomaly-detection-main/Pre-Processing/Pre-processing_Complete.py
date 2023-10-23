@@ -202,7 +202,7 @@ x_test['label'] = y_test
 
 x_train.to_csv('../Dataset/train_pp3.csv', index=False)
 x_test.to_csv('../Dataset/test_pp3.csv', index=False)
-
+print(x_train.dtypes)
 
 # In[ ]:
 y_test
