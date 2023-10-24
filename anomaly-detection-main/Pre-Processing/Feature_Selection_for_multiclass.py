@@ -13,7 +13,7 @@ from sklearn.preprocessing import StandardScaler
 
 import sys
 sys.path.append("..")
-from Functions.UNSW_DF import *
+from Functions.UNSW_DF import DF_original_traintest
 
 train, test = DF_original_traintest()
 
@@ -21,8 +21,8 @@ train, test = DF_original_traintest()
 # In[2]:
 
 
-train.drop(["attack_cat"], axis=1, inplace = True)
-test.drop(["attack_cat"], axis=1, inplace = True)
+train.drop(["label","id"], axis=1, inplace = True)
+test.drop(["label", "id"], axis=1, inplace = True)
 
 
 # In[3]:
@@ -40,8 +40,8 @@ train[cols] = train[cols].apply(le.fit_transform)
 # In[4]:
 
 
-X_train, y_train = train.drop(["label"], axis=1), train["label"]
-X_test, y_test = test.drop(["label"], axis=1), test["label"]
+X_train, y_train = train.drop(["attack_cat"], axis=1), train["attack_cat"]
+X_test, y_test = test.drop(["attack_cat"], axis=1), test["attack_cat"]
 
 
 # In[5]:
