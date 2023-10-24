@@ -10,20 +10,21 @@
 
 
 import warnings
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler, LabelEncoder ,OneHotEncoder
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 # metrics are used to find accuracy or error
 from sklearn import metrics
 
-
+labelencoder = LabelEncoder()
+#oneHotEncoder = OneHotEncoder(handle_unknown='ignore',drop='first')
 # ## Functions
 
 # In[2]:
 
 
 # 1. Reading Train and test dataset.
-# 2. Check if dataset is reversed.
+# 2. Check if the dataset is reversed.
 # 3. Drop 'id', and 'attack_cat' columns.
 def import_train_test():
     train = pd.read_csv('../Dataset/UNSW_NB15_training-set.csv')
@@ -31,11 +32,10 @@ def import_train_test():
     
     # Dropping the columns based on Feature Selection:
     # https://www.kaggle.com/khairulislam/unsw-nb15-feature-importance
-    drop_cols = ['id','label'] + ['response_body_len', 'spkts', 'ct_flw_http_mthd', 'trans_depth', 'dwin', 'ct_ftp_cmd', 'is_ftp_login']
+    drop_cols = ['id','label'] #+ ['response_body_len', 'spkts', 'ct_flw_http_mthd', 'trans_depth', 'dwin', 'ct_ftp_cmd', 'is_ftp_login']
     for df in [train, test]:
-        # creating instance of labelencoder
-        labelencoder = LabelEncoder()
-        # Assigning numerical values and storing in same column
+        # creating instance of label encoder
+        # Assigning numerical values and storing in the same column
         df['attack_cat'] = labelencoder.fit_transform(df['attack_cat'])
         for col in drop_cols:
             if col in df.columns:
@@ -117,7 +117,7 @@ test.dtypes
 x_train, y_train = train.drop(['attack_cat'], axis=1), train['attack_cat']
 x_test, y_test = test.drop(['attack_cat'], axis=1), test['attack_cat']
 # Running the inputs into the feature_engineer function
-x_train, x_test = feature_engineer(x_train), feature_engineer(x_test)
+#x_train, x_test = feature_engineer(x_train), feature_engineer(x_test)
 
 
 # In[ ]:
@@ -213,5 +213,8 @@ x_test.to_csv('../Dataset/test_pp3_multi.csv', index=False)
 print(x_train)
 print("-----------------------------------------------")
 print(x_test)
+print(x_train['attack_cat'].unique())
+print(x_train.dtypes)
+print(x_test.dtypes)
 # In[ ]:
 y_test
