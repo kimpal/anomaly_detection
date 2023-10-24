@@ -24,7 +24,7 @@ from sklearn.model_selection import RandomizedSearchCV, train_test_split
 from scipy.stats import randint
 from sklearn.ensemble import RandomForestClassifier
 
-X_train_multi, X_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
+x_train_multi, x_test_multi, y_train_multi, y_test_multi = DF_XY_MULTI()
 
 # importing Dataset
 #train_multi, test_multi = DF_preprocessed_traintest_multi()
@@ -81,7 +81,7 @@ preds_train=clf.predict(X_train_multi)
 print_scores(y_test_multi,pred,y_train_multi,preds_train)
 """
 
-"""
+#"""
 # test min_samples_split: 1.0
 params = {"criterion": "entropy",
               "bootstrap":True,
@@ -97,11 +97,11 @@ model = RandomForestClassifier(**params)
 model.set_params(**params)
 
 # fit the model on the whole dataset
-model.fit(X_train_multi, y_train_multi)
+model.fit(x_train_multi, y_train_multi)
 
-# performing predictions on the traing and test dataset
-y_pred_train = model.predict(X_train_multi)
-y_pred_test = model.predict(X_test_multi)
+# performing predictions on the training and test dataset
+y_pred_train = model.predict(x_train_multi)
+y_pred_test = model.predict(x_test_multi)
 
 
 train_accuracy = accuracy_score(y_train_multi, y_pred_train)
@@ -135,7 +135,7 @@ cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
 metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
 pyplot.savefig('RFC_confusion_matrix.png')
 pyplot.show()
-"""
+#"""
 
 """
 # Random forest baseline with no feature selection
@@ -159,7 +159,7 @@ metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
 pyplot.show()
 """
 
-#"""
+"""
 # evaluation random forest model using threshold=0.006 Feature chose whit different models
 # feature selection
 def select_features(x_train, y_train, x_test):
@@ -196,7 +196,7 @@ cm = metrics.confusion_matrix(y_test_multi, y_pred_test)
 print("confusion matrix:")
 metrics.ConfusionMatrixDisplay(confusion_matrix=cm).plot()
 pyplot.show()
-#"""
+"""
 
 elapsed_time = round((time.time() - start_time), 3)
 print(f"Runtime: {elapsed_time}s")
