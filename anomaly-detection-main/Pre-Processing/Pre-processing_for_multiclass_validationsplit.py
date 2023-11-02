@@ -23,7 +23,7 @@ labelencoder = LabelEncoder()
 # In[2]:
 
 # code to split training into validation and training. validation:25% and train:75%
-train = pd.read_csv('../../Anomaly-Detection-main/Dataset/UNSW_NB15_training-set.csv')
+train = pd.read_csv('../Dataset/UNSW_NB15_training-set.csv')
 print(train.shape)
 train, val = train_test_split(train, test_size=0.25)
 
@@ -225,14 +225,14 @@ for x in x_test.columns:
 
 
 # merge x_train and y_train before exporting to CSV
-x_train['label'] = y_train
-x_val['label'] = y_val
-x_test['label'] = y_test
+x_train['attack_cat'] = y_train
+x_val['attack_cat'] = y_val
+x_test['attack_cat'] = y_test
 
 
-#x_train.to_csv('../Dataset/train_1_pp3_multi.csv', index=False)
-#x_val.to_csv('../Dataset/val_pp3_multi.csv', index=False)
-#x_test.to_csv('../Dataset/test_pp3_multi.csv', index=False)
+x_train.to_csv('../Dataset/train_1_pp3_multi.csv', index=False)
+x_val.to_csv('../Dataset/val_pp3_multi.csv', index=False)
+x_test.to_csv('../Dataset/test_pp3_multi.csv', index=False)
 print(x_train.dtypes)
 
 
