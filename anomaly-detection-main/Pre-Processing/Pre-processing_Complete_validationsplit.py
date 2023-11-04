@@ -21,32 +21,18 @@ from sklearn import metrics
 
 # In[2]:
 
-# code to split training into validation and training. validation:25% and train:75%
-train = pd.read_csv('../../Anomaly-Detection-main/Dataset/UNSW_NB15_training-set.csv')
-print(train.shape)
-train, val = train_test_split(train, test_size=0.25)
-
-print(train.shape)
-print(val.shape)
-
-train.to_csv('../Dataset/UNSW_NB15_training-1-set.csv')
-val.to_csv('../Dataset/UNSW_NB15_validate-set.csv')
-print("splitting UNSW_NB15_training-set.csv into training and validate finishe")
-
 # 1. Reading Train and test dataset.
 # 2. Check if dataset is reversed.
 # 3. Drop 'id', and 'attack_cat' columns.
 def import_train_test():
-    train = pd.read_csv('../Dataset/UNSW_NB15_training-1-set.csv')
-    val = pd.read_csv('../Dataset/UNSW_NB15_validate-set.csv')
+    train = pd.read_csv('../Dataset/UNSW_NB15_training-set.csv')
     test = pd.read_csv('../Dataset/UNSW_NB15_testing-set.csv')
-    print(train.shape)
-    print(val.shape)
-    print(test.shape)
+    print("train shape: ",train.shape)
+    print("test shape: ",test.shape)
     # Dropping the columns based on Feature Selection:
     # https://www.kaggle.com/khairulislam/unsw-nb15-feature-importance
     drop_cols = ['attack_cat', 'id'] #+ ['response_body_len', 'spkts', 'ct_flw_http_mthd', 'trans_depth', 'dwin', 'ct_ftp_cmd', 'is_ftp_login']
-    for df in [train,val, test]:
+    for df in [train, test]:
         for col in drop_cols:
             if col in df.columns:
                 print('Dropping: ', col)
@@ -57,18 +43,16 @@ def import_train_test():
         train, test = test, train
         print("Train and Test sets are reversed, Corrected Shape:")
         print("Train shape: ", train.shape)
-        print("Val shape: ", val.shape)
         print("Test shape: ", test.shape)
+        train, val = train_test_split(train, test_size=0.25)
     else:
         print("The dataset, is already reversed")
         print("Train shape: ", train.shape)
-        print("Val shape: ", val.shape)
         print("Test shape: ", test.shape)
-    return train, val, test
-
+        train, val = train_test_split(train, test_size=0.25)
+    return train,val, test
 
 # In[3]:
-
 
 def feature_engineer(df):
     # Everything except: 'FIN', 'INT', 'CON', 'REQ', 'RST is renamed 'others'
@@ -102,8 +86,10 @@ def get_cat_columns(train):
 
 # Importing train test by using the function
 train, val, test = import_train_test()
-
-
+print("validation split is done and remval of id and atac_cat" )
+print("train shape: ", train.shape)
+print("val shape: ",val.shape)
+print("test shape: ", test.shape)
 # In[6]:
 
 
