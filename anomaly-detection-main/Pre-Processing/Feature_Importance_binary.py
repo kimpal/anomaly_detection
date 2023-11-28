@@ -29,19 +29,20 @@ from sklearn.inspection import permutation_importance
 
 # getting the dataset file
 main_path ="../Dataset/"
-#train = pd.read_csv(main_path+'train_pp3_multi.csv', low_memory=False)
-#test = pd.read_csv(main_path+'test_pp3_multi.csv', low_memory=False)
-#train = pd.read_csv(main_path+'train_label_multi_10_classes.csv', low_memory=False)
-#test = pd.read_csv(main_path+'test_label_multi_10_classes.csv', low_memory=False)
-train = pd.read_csv("../Dataset/train_1_pp3_multi.csv")
-test = pd.read_csv("../Dataset/test_pp3_multi.csv")
+train = pd.read_csv("../Dataset/train_1_pp3.csv")
+val = pd.read_csv("../Dataset/val_pp3.csv")
+test = pd.read_csv("../Dataset/test_pp3.csv")
 print('dataset in shape of train: ', train.shape)
 print('dataset in shape of tes: ', test.shape)
 
 
 # split data into X an Y multiclass
-x_train, y_train = train.drop(['attack_cat'], axis=1), train['attack_cat']
-x_test, y_test = test.drop(['attack_cat'], axis=1), test['attack_cat']
+x_train, y_train = train.drop(['label'], axis=1), train['label']
+x_test, y_test = test.drop(['label'], axis=1), test['label']
+
+# split data into x an y on binary
+#x_train, y_train = train.drop(["label"], axis=1), train["label"]
+#x_test, y_test = test.drop(["label"], axis=1), test["label"]
 
 # cod for models :https://machinelearningmastery.com/calculate-feature-importance-with-python/
 
@@ -57,7 +58,7 @@ XGBoost_model.fit(x_train, y_train)
 # get the feature importance
 feature_importanceXGBC_scores = pd.Series(XGBoost_model.feature_importances_, index=x_train.columns).sort_values(ascending=False)
 # saving the feature importance of XGBoost
-pd.DataFrame({"Featureimportance list": feature_importanceXGBC_scores}).to_csv('no_data_flip_feature_importance_XGBoost_multi_val_split.csv')
+pd.DataFrame({"Featureimportance list": feature_importanceXGBC_scores}).to_csv('no_data_flip_feature_importance_XGBoost_binary_val_split.csv')
 # Plotting the feature importance
 #fig, ax = plt.subplots(figsize=(10,10))
 #xgb.plot_importance(model, max_num_features=50, height=0.5, ax=ax,importance_type='gain')
@@ -68,7 +69,7 @@ plt.figure(figsize=(12, 16))
 plt.title('Feature Importance')
 feature_importanceXGBC_scores[:top_n].plot.barh();
 plt.xlabel('Relative Importance')
-plt.savefig('no_data_flip_XGBClassifier_feature_importance_multi_val_split.png')
+plt.savefig('no_data_flip_XGBClassifier_feature_importance_binary_val_split.png')
 plt.show()
 #plt.show()
 #explainer = shap.TreeExplainer(model_DT)
@@ -89,7 +90,7 @@ GradientBoost_model.fit(x_train, y_train)
 # get the feature importance
 feature_importanceGradientBoost_scores = pd.Series(GradientBoost_model.feature_importances_, index=x_train.columns).sort_values(ascending=False)
 # saving the feature importance of XGBoost
-pd.DataFrame({"Featureimportance list": feature_importanceGradientBoost_scores}).to_csv('feature_importance_GradientBoost_multi_val_split.csv')
+pd.DataFrame({"Featureimportance list": feature_importanceGradientBoost_scores}).to_csv('no_data_flip_feature_importance_GradientBoost_binary_val_split.csv')
 # Plotting the feature importance
 #fig, ax = plt.subplots(figsize=(10,10))
 #xgb.plot_importance(model, max_num_features=50, height=0.5, ax=ax,importance_type='gain')
@@ -100,7 +101,7 @@ plt.figure(figsize=(12, 16))
 plt.title('Feature Importance')
 feature_importanceGradientBoost_scores[:top_n].plot.barh();
 plt.xlabel('Relative Importance')
-plt.savefig('GradientBoostClassifier_feature_importance_multiclas_val_split.png')
+plt.savefig('no_data_flip_GradientBoostClassifier_feature_importance_binary_val_split.png')
 plt.show()
 """
 
