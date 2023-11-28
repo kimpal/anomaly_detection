@@ -9,7 +9,7 @@
 
 
 import warnings
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from sklearn.model_selection import train_test_split
@@ -37,7 +37,12 @@ def import_train_test():
             if col in df.columns:
                 print('Dropping: ', col)
                 df.drop([col], axis=1, inplace=True)
-    
+
+    # no data flip
+    #train, val = train_test_split(train, test_size=0.25)
+    #return train,val, test
+    #data flip
+    #"""
     if train.shape < test.shape:
         # Reversing the dataset
         train, test = test, train
@@ -51,7 +56,7 @@ def import_train_test():
         print("Test shape: ", test.shape)
         train, val = train_test_split(train, test_size=0.25)
     return train,val, test
-
+#"""
 # In[3]:
 
 def feature_engineer(df):
@@ -138,7 +143,8 @@ x_train.head()
 
 
 # Using standard scaler to normalize data on non categorical columns
-scaler = StandardScaler()
+#scaler = StandardScaler()
+scaler = MinMaxScaler()
 x_train[non_categorical_columns] = scaler.fit_transform(x_train[non_categorical_columns])
 x_val[non_categorical_columns] = scaler.transform(x_val[non_categorical_columns])
 x_test[non_categorical_columns] = scaler.transform(x_test[non_categorical_columns])

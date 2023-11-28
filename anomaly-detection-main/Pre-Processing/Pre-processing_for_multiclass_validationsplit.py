@@ -10,7 +10,7 @@
 
 
 import warnings
-from sklearn.preprocessing import StandardScaler, LabelEncoder
+from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler
 import numpy as np # linear algebra
 import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from sklearn.model_selection import train_test_split
@@ -28,8 +28,8 @@ labelencoder = LabelEncoder()
 def import_train_test():
     train = pd.read_csv('../Dataset/UNSW_NB15_training-set.csv')
     test = pd.read_csv('../Dataset/UNSW_NB15_testing-set.csv')
-    print(train.shape)
-    print(test.shape)
+    print("train: ",train.shape)
+    print("test: ",test.shape)
     # Dropping the columns based on Feature Selection:
     # https://www.kaggle.com/khairulislam/unsw-nb15-feature-importance
     drop_cols = ['id', 'label'] #+ ['response_body_len', 'spkts', 'ct_flw_http_mthd', 'trans_depth', 'dwin', 'ct_ftp_cmd', 'is_ftp_login']
@@ -41,7 +41,13 @@ def import_train_test():
             if col in df.columns:
                 print('Dropping: ', col)
                 df.drop([col], axis=1, inplace=True)
-    
+
+    # no data flip
+    #train, val = train_test_split(train, test_size=0.25)
+    #return train, val, test
+
+    # data flipp
+    #"""
     if train.shape < test.shape:
         # Reversing the dataset
         train, test = test, train
@@ -55,7 +61,7 @@ def import_train_test():
         print("Test shape: ", test.shape)
         train, val = train_test_split(train, test_size=0.25)
     return train, val, test
-
+    #"""
 
 # In[3]:
 
@@ -144,7 +150,9 @@ x_train.head()
 
 
 # Using standard scaler to normalize data on non categorical columns
-scaler = StandardScaler()
+#scaler = StandardScaler()
+# Experimental scaling on Logistic regression
+scaler = MinMaxScaler()
 x_train[non_categorical_columns] = scaler.fit_transform(x_train[non_categorical_columns])
 x_val[non_categorical_columns] = scaler.transform(x_val[non_categorical_columns])
 x_test[non_categorical_columns] = scaler.transform(x_test[non_categorical_columns])
