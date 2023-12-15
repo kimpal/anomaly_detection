@@ -3,11 +3,7 @@
 
 # # Pre-processing (Complete)
 
-# ## imports
-
-# In[1]:
-
-
+# imports
 import warnings
 from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler
 import numpy as np # linear algebra
@@ -19,10 +15,8 @@ from sklearn import metrics
 
 # Functions
 
-# In[2]:
-
 # 1. Reading Train and test dataset.
-# 2. Check if dataset is reversed.
+# 2. Check if the dataset is reversed.
 # 3. Drop 'id', and 'attack_cat' columns.
 def import_train_test():
     train = pd.read_csv('../Dataset/UNSW_NB15_training-set.csv')
@@ -41,6 +35,7 @@ def import_train_test():
     # no data flip
     #train, val = train_test_split(train, test_size=0.25)
     #return train,val, test
+
     #data flip
     #"""
     if train.shape < test.shape:
@@ -56,7 +51,7 @@ def import_train_test():
         print("Test shape: ", test.shape)
         train, val = train_test_split(train, test_size=0.25)
     return train,val, test
-#"""
+    #"""
 # In[3]:
 
 def feature_engineer(df):
@@ -91,7 +86,7 @@ def get_cat_columns(train):
 
 # Importing train test by using the function
 train, val, test = import_train_test()
-print("validation split is done and remval of id and atac_cat" )
+print("validation split is done and removal of id and atac_cat" )
 print("train shape: ", train.shape)
 print("val shape: ",val.shape)
 print("test shape: ", test.shape)
@@ -104,16 +99,27 @@ val.isnull().sum()
 test.isnull().sum()
 
 
-# In[7]:
+# Use value_counts to get the counts of each unique label in train, val, test
+def print_attack_distribution(dataset, dataset_name):
+    attack_counts = dataset['label'].value_counts()
 
+    # Print the distribution
+    print(f"\nAttack class distribution {dataset_name}:")
+    for attack, count in attack_counts.items():
+        percentage = count / len(dataset['label']) * 100
+        print(f"Class={attack}: n={count} ({percentage:.3f}%)")
+
+# Calling the print_attack_distribution on train, val and test,
+print_attack_distribution(train, 'train')
+print_attack_distribution(val, 'val')
+print_attack_distribution(test, 'test')
+print("\n")
 
 # Addressing the different Data types for each column
 train.dtypes
 val.dtypes
 test.dtypes
 
-
-# In[ ]:
 
 
 # Splitting the dataset into inputs and outputs
@@ -124,39 +130,23 @@ x_test, y_test = test.drop(['label'], axis=1), test['label']
 #x_train, x_val, x_test = feature_engineer(x_train),feature_engineer(x_val), feature_engineer(x_test)
 
 
-
-# In[ ]:
-
-
 # Getting the categorical and non categorical columns
 categorical_columns = get_cat_columns(x_train)
 non_categorical_columns = [x for x in x_train.columns if x not in categorical_columns]
 
 
-# In[ ]:
-
-
 x_train.head()
 
 
-# In[ ]:
-
-
 # Using standard scaler to normalize data on non categorical columns
-#scaler = StandardScaler()
-scaler = MinMaxScaler()
+scaler = StandardScaler()
+#scaler = MinMaxScaler()
 x_train[non_categorical_columns] = scaler.fit_transform(x_train[non_categorical_columns])
 x_val[non_categorical_columns] = scaler.transform(x_val[non_categorical_columns])
 x_test[non_categorical_columns] = scaler.transform(x_test[non_categorical_columns])
 
 
-# In[ ]:
-
-
 x_train
-
-
-# In[ ]:
 
 
 # Using get_dummies to make the categorical values usable.
@@ -167,13 +157,7 @@ print("Column mismatch {0}, {1}".format(set(x_train.columns)- set(x_test.columns
 features = list(set(x_train.columns) & set(x_val.columns) & set(x_test.columns))
 
 
-# In[ ]:
-
-
 features = list(set(x_train.columns)& set(x_val.columns) & set(x_test.columns))
-
-
-# In[ ]:
 
 
 print(f"Number of features {len(features)}")
@@ -182,13 +166,7 @@ x_val = x_val[features]
 x_test = x_test[features]
 
 
-# In[ ]:
-
-
 x_train
-
-
-# In[ ]:
 
 
 print('X_train Shape: ', x_train.shape)

@@ -4,11 +4,7 @@
 # # Pre-processing (Complete)
 #using label encoding on attack_cat
 
-# ## imports
-
-# In[1]:
-
-
+# imports
 import warnings
 from sklearn.preprocessing import StandardScaler, LabelEncoder, MinMaxScaler
 import numpy as np # linear algebra
@@ -19,8 +15,6 @@ from sklearn import metrics
 
 labelencoder = LabelEncoder()
 # Functions
-
-# In[2]:
 
 # 1. Reading Train and test dataset.
 # 2. Check if dataset is reversed.
@@ -46,7 +40,7 @@ def import_train_test():
     #train, val = train_test_split(train, test_size=0.25)
     #return train, val, test
 
-    # data flipp
+    # data flip
     #"""
     if train.shape < test.shape:
         # Reversing the dataset
@@ -96,15 +90,30 @@ def get_cat_columns(train):
 # In[5]:
 
 
-# Importing train test by using the function
+# Importing train test by using the import_train_test function
 train, val, test = import_train_test()
 
-print("train shape: ",train.shape)
-print("val shape: ",val.shape)
-print("test shape: ",test.shape)
+print("validation split is done and removal of id and label" )
+print("train ",train.shape)
+print("validation ",val.shape)
+print("test ",test.shape)
 
 # In[6]:
+# Use value_counts to get the counts of each unique value in train, val, test
+def print_attack_distribution(dataset, dataset_name):
+    attack_counts = dataset['attack_cat'].value_counts()
 
+    # Print the distribution
+    print(f"\nAttack class distribution {dataset_name}:")
+    for attack, count in attack_counts.items():
+        percentage = count / len(dataset['attack_cat']) * 100
+        print(f"Class={attack}: n={count} ({percentage:.3f}%)")
+
+# Calling the print_attack_distribution on train, val and test,
+print_attack_distribution(train, 'train')
+print_attack_distribution(val, 'val')
+print_attack_distribution(test, 'test')
+print("\n")
 
 # To check if train and test datasets inhibits missing values
 train.isnull().sum()
@@ -132,39 +141,25 @@ x_test, y_test = test.drop(['attack_cat'], axis=1), test['attack_cat']
 #x_train, x_val, x_test = feature_engineer(x_train),feature_engineer(x_val), feature_engineer(x_test)
 
 
-# In[ ]:
-
 
 # Getting the categorical and non categorical columns
 categorical_columns = get_cat_columns(x_train)
 non_categorical_columns = [x for x in x_train.columns if x not in categorical_columns]
 
 
-# In[ ]:
-
-
 x_train.head()
 
 
-# In[ ]:
-
-
 # Using standard scaler to normalize data on non categorical columns
-#scaler = StandardScaler()
+scaler = StandardScaler()
 # Experimental scaling on Logistic regression
-scaler = MinMaxScaler()
+#scaler = MinMaxScaler()
 x_train[non_categorical_columns] = scaler.fit_transform(x_train[non_categorical_columns])
 x_val[non_categorical_columns] = scaler.transform(x_val[non_categorical_columns])
 x_test[non_categorical_columns] = scaler.transform(x_test[non_categorical_columns])
 
 
-# In[ ]:
-
-
 x_train
-
-
-# In[ ]:
 
 
 # Using get_dummies to make the categorical values usable.
