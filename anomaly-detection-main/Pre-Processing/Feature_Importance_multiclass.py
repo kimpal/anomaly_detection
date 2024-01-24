@@ -33,15 +33,23 @@ main_path ="../Dataset/"
 #test = pd.read_csv(main_path+'test_pp3_multi.csv', low_memory=False)
 #train = pd.read_csv(main_path+'train_label_multi_10_classes.csv', low_memory=False)
 #test = pd.read_csv(main_path+'test_label_multi_10_classes.csv', low_memory=False)
-train = pd.read_csv("../Dataset/train_1_pp3_multi.csv")
-test = pd.read_csv("../Dataset/test_pp3_multi.csv")
+#train = pd.read_csv("../Dataset/train_1_pp3_multi.csv")
+#test = pd.read_csv("../Dataset/test_pp3_multi.csv")
+train = pd.read_csv('../Dataset/Ton_IoT/train_pp_multi.csv')
+#val = pd.read_csv('../Dataset/Ton_IoT/val_pp_multi.csv')
+#test = pd.read_csv('../Dataset/Ton_IoT/test_pp_multi.csv')
 print('dataset in shape of train: ', train.shape)
-print('dataset in shape of tes: ', test.shape)
-
+#print('dataset in shape of tes: ', test.shape)
+#Feature_importance_file_name = 'UNSW-NB15_feature_importance_XGBoost_multi_val_split'
+Feature_importance_file_name = 'Ton_IoT_feature_importance_XGBoost_multi_val_split'
+#Feature_importance_file_name = 'Bot_IoT_feature_importance_XGBoost_multi_val_split'
 
 # split data into X an Y multiclass
-x_train, y_train = train.drop(['attack_cat'], axis=1), train['attack_cat']
-x_test, y_test = test.drop(['attack_cat'], axis=1), test['attack_cat']
+#target = 'attack_cat' # target values the UNSW-NB15
+target = 'type' # target values the TON_IoT
+#target = 'category' # target values the BOT_IoT
+x_train, y_train = train.drop([target], axis=1), train[target]
+#x_test, y_test = test.drop([target], axis=1), test[target]
 
 # cod for models :https://machinelearningmastery.com/calculate-feature-importance-with-python/
 
@@ -51,13 +59,14 @@ code for the XGBoost feature selection:
  https://machinelearningmastery.com/feature-importance-and-feature-selection-with-xgboost-in-python/
 """
 #"""
+print("Feature_importance_start...")
 # fit model on training data
 XGBoost_model = XGBClassifier()
 XGBoost_model.fit(x_train, y_train)
 # get the feature importance
 feature_importanceXGBC_scores = pd.Series(XGBoost_model.feature_importances_, index=x_train.columns).sort_values(ascending=False)
 # saving the feature importance of XGBoost
-pd.DataFrame({"Featureimportance list": feature_importanceXGBC_scores}).to_csv('no_data_flip_feature_importance_XGBoost_multi_val_split.csv')
+pd.DataFrame({"Featureimportance list": feature_importanceXGBC_scores}).to_csv(Feature_importance_file_name+'.csv')
 # Plotting the feature importance
 #fig, ax = plt.subplots(figsize=(10,10))
 #xgb.plot_importance(model, max_num_features=50, height=0.5, ax=ax,importance_type='gain')
@@ -68,7 +77,7 @@ plt.figure(figsize=(12, 16))
 plt.title('Feature Importance')
 feature_importanceXGBC_scores[:top_n].plot.barh();
 plt.xlabel('Relative Importance')
-plt.savefig('no_data_flip_XGBClassifier_feature_importance_multi_val_split.png')
+plt.savefig(Feature_importance_file_name+'.png')
 plt.show()
 #plt.show()
 #explainer = shap.TreeExplainer(model_DT)
