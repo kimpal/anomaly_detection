@@ -29,16 +29,20 @@ from sklearn.inspection import permutation_importance
 
 # getting the dataset file
 main_path ="../Dataset/"
-train = pd.read_csv("../Dataset/train_1_pp3.csv")
-val = pd.read_csv("../Dataset/val_pp3.csv")
-test = pd.read_csv("../Dataset/test_pp3.csv")
+#train = pd.read_csv("../Dataset/train_1_pp3.csv") # UNSW-NB15 Dataset
+#train = pd.read_csv('../Dataset/Ton_IoT/train_pp_binary.csv') # Ton_IoT Dataset
+train = pd.read_csv('../Dataset/BoT-IoT/train_pp_binary.csv') # BOT_IoT Dataset
 print('dataset in shape of train: ', train.shape)
-print('dataset in shape of tes: ', test.shape)
-
-
+#print('dataset in shape of tes: ', test.shape)
+#selecting the name of the output file for csv and png
+#Feature_importance_file_name = 'Ton_IoT_feature_importance_XGBoost_Binary_val_split'
+Feature_importance_file_name = 'Bot_IoT_feature_importance_XGBoost_Binary_val_split'
 # split data into X an Y multiclass
-x_train, y_train = train.drop(['label'], axis=1), train['label']
-x_test, y_test = test.drop(['label'], axis=1), test['label']
+#target = 'label' #Binary target on UNSW-NB15
+#target = 'label' #Binary target on TON_IoT label
+target = 'attack' #Binary target on Bot-IoT
+x_train, y_train = train.drop([target], axis=1), train[target]
+#x_test, y_test = test.drop([target], axis=1), test[target]
 
 # split data into x an y on binary
 #x_train, y_train = train.drop(["label"], axis=1), train["label"]
@@ -58,7 +62,7 @@ XGBoost_model.fit(x_train, y_train)
 # get the feature importance
 feature_importanceXGBC_scores = pd.Series(XGBoost_model.feature_importances_, index=x_train.columns).sort_values(ascending=False)
 # saving the feature importance of XGBoost
-pd.DataFrame({"Featureimportance list": feature_importanceXGBC_scores}).to_csv('no_data_flip_feature_importance_XGBoost_binary_val_split.csv')
+pd.DataFrame({"Featureimportance list": feature_importanceXGBC_scores}).to_csv(Feature_importance_file_name+'.csv')
 # Plotting the feature importance
 #fig, ax = plt.subplots(figsize=(10,10))
 #xgb.plot_importance(model, max_num_features=50, height=0.5, ax=ax,importance_type='gain')
@@ -69,7 +73,7 @@ plt.figure(figsize=(12, 16))
 plt.title('Feature Importance')
 feature_importanceXGBC_scores[:top_n].plot.barh();
 plt.xlabel('Relative Importance')
-plt.savefig('no_data_flip_XGBClassifier_feature_importance_binary_val_split.png')
+plt.savefig(Feature_importance_file_name+'.png')
 plt.show()
 #plt.show()
 #explainer = shap.TreeExplainer(model_DT)
