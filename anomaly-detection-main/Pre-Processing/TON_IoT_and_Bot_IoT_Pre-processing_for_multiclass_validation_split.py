@@ -12,12 +12,14 @@ import pandas as pd # data processing, CSV file I/O (e.g. pd.read_csv)
 from sklearn.model_selection import train_test_split
 # metrics are used to find accuracy or error
 from sklearn import metrics
-#target= 'type' # on Ton_IoT the target with the attack_cat is named type
-target= 'category' # on Bot-IoT the target with the attack_cat is named type
+target= 'type' # on Ton_IoT the target with the attack_cat is named type
+#target= 'category' # on Bot-IoT the target with the attack_cat is named type
 labelencoder = LabelEncoder()
 # Functions
 # comment out the splitting the train_test since it is not nesesery to do it multiple times:
 #train_test = pd.read_csv('../Dataset/Ton_IoT/Train_Test_Network.csv') #added to work whit TON_IoT
+#print(train_test['type'].unique())
+#print("Ton_IOT_original dataset shap: ", train_test.shape)
 #train, test = train_test_split(train_test, test_size=0.40) #added to work whit TON_IoT
 #train.to_csv('../Dataset/Ton_IoT/train.csv', index=False) #added to work whit TON_IoT
 #test.to_csv('../Dataset/Ton_IoT/test.csv', index=False) #added to work whit TON_IoT
@@ -27,15 +29,15 @@ labelencoder = LabelEncoder()
 Bot_IoT_drop = ['pkSeqID','Stime','saddr','daddr','attack','subcategory'] + ['dport', 'sport']
 TON_IoT_drop = ['weird_notice','weird_addl','Weirdname','ts','src_ip','dst_ip','label']
 def import_train_test():
-    #train = pd.read_csv('../Dataset/Ton_IoT/train.csv')
-    #test = pd.read_csv('../Dataset/Ton_IoT/test.csv')
-    train = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Training.csv') # bot iot dataset
-    test = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Testing.csv') # bot iot dataset
+    train = pd.read_csv('../Dataset/Ton_IoT/train.csv')
+    test = pd.read_csv('../Dataset/Ton_IoT/test.csv')
+    #train = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Training.csv') # bot iot dataset
+    #test = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Testing.csv') # bot iot dataset
     print("train: ",train.shape)
     print("test: ",test.shape)
     # Dropping the columns based on Feature Selection:
     # https://www.kaggle.com/khairulislam/unsw-nb15-feature-importance
-    drop_cols = ['id'] + Bot_IoT_drop #TON_IoT_drop #+ ['response_body_len', 'spkts', 'ct_flw_http_mthd', 'trans_depth', 'dwin', 'ct_ftp_cmd', 'is_ftp_login']
+    drop_cols = ['id'] + TON_IoT_drop#+ Bot_IoT_drop #TON_IoT_drop #+ ['response_body_len', 'spkts', 'ct_flw_http_mthd', 'trans_depth', 'dwin', 'ct_ftp_cmd', 'is_ftp_login']
     for df in [train, test]:
         # creating instance of label encoder
         # Assigning numerical values and storing in the same column

@@ -40,7 +40,7 @@ test = pd.read_csv(Bot_IoT_test)
 #val = pd.read_csv(UNSW_NB15_val_dataset)
 #test = pd.read_csv(UNSW_NB15_test_dataset)
 
-# list of respective target values on different dataset dataset
+# list of respective target values on different dataset
 #target_value = "attack_cat" # target values on Multiclass UNSW_NB15
 #target_value = "label" # target values on Binary UNSW_NB15
 #target_value = "type" # target values on Multiclass TON_IoT

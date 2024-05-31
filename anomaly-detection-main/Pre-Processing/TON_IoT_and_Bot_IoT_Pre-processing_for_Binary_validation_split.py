@@ -38,7 +38,8 @@ def import_train_test():
     #test = pd.read_csv('../Dataset/Ton_IoT/test.csv')
     #train = pd.read_csv('../Dataset/BoT-IoT/train.csv') # Bot_iot
     train = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Training.csv')  # Bot_iot
-    test = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Testing.csv') # Bot_iot
+    #test = pd.read_csv('../Dataset/BoT-IoT/UNSW_2018_IoT_Botnet_Final_10_best_Testing.csv') # Bot_iot
+    print(train['attack'].unique())
     print("train: ",train.shape)
     print("test: ",test.shape)
     # Dropping the columns based on Feature Selection:

@@ -71,7 +71,7 @@ print("Original shape x_test:",'\t', x_test.shape)
 #0.026790911
 #0.061215572
 #"""
-#"""
+"""
 print("FeatureSelection whit XGBoost starts...")
 # Feature selection on Binary data whit XGBoost
 def select_features(x_train, y_train, x_test, x_val):
@@ -81,6 +81,10 @@ def select_features(x_train, y_train, x_test, x_val):
 	#Threshold used in paper 0.007539547
 	# Bot_IoT_Threshold =
 	# TON_IOT_Threshold = 0.0075270594
+	# binary_TON_IoT_threshold = 0.0044252956
+	# multiclass_TON_IoT_threshold = 0.007512621
+	# Multiclass_BOT_IoT_threshold = 0.026606342 # 7 features # used
+	# Binary_BOT_IoT_threshold = 0.054992266 # 7 features # used
 	fs = SelectFromModel(XGBClassifier(),threshold=0.026606342)
 	# learn relationship from training data
 	fs.fit(x_train, y_train)
@@ -96,7 +100,7 @@ x_train_fs, x_test_fs, x_val_fs, fs = select_features(x_train, y_train, x_test, 
 print("New shape x_train: ",x_train_fs.shape)
 print("New shape x_val: ",x_val_fs.shape)
 print("New shape x_test: ",x_test_fs.shape)
-#"""
+"""
 
 #"""
 # Support Vector Machine (SVM) model
@@ -105,22 +109,36 @@ model = svm.SVC(kernel='rbf',gamma='scale', degree=3, C=1.12) # settings from re
 #"""
 # DT_model
 #model= DecisionTreeClassifier(max_depth=9)
+"""
+params = {
+	"criterion": "entropy",
+	"bootstrap": True,
+	"n_estimators": 200,
+	"max_depth": 50,
+	"min_samples_split": 2,
+	"min_samples_leaf": 1,
+	"n_jobs": -1
+}
+# Create a RandomForestClassifier instance with the specified parameters
+#model = RandomForestClassifier(**params)
+"""
 
-"""
-# Baseline test on model Before feature selection
-start_time = time.time()
-print("Model fitting start...")
-# Fitting the model
-model.fit(x_train, y_train)
-print("The model Parameters on: \n",model)
-# making prediction on train and test data
-y_pred_train = model.predict(x_train)
-y_pred_val = model.predict(x_val)
-y_pred_test = model.predict(x_test)
-"""
 # for loup to make the code run multiple times
 for i in range(1):
+	#""""
+	# Baseline test on model Before feature selection
+	print("Run", i + 1)
+	start_time = time.time()
+	print("Model fitting start...")
+	# Fitting the model
+	model.fit(x_train, y_train)
+	print("The model Parameters on: \n",model)
+	# making prediction on train and test data
+	y_pred_train = model.predict(x_train)
+	y_pred_val = model.predict(x_val)
+	y_pred_test = model.predict(x_test)
 	#"""
+	"""
 	print("Run",i+1)
 	#feature selection dataset whit Xgboost
 	# fit the model whit feature selection dataset
@@ -133,7 +151,7 @@ for i in range(1):
 	y_pred_train = model.predict(x_train_fs)
 	y_pred_val = model.predict(x_val_fs)
 	y_pred_test = model.predict(x_test_fs)
-	#"""
+	"""
 
 	#"""
 	print("Results on model...")

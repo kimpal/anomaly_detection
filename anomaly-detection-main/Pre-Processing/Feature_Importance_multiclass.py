@@ -33,23 +33,23 @@ main_path ="../Dataset/"
 #test = pd.read_csv(main_path+'test_pp3_multi.csv', low_memory=False)
 #train = pd.read_csv(main_path+'train_label_multi_10_classes.csv', low_memory=False)
 #test = pd.read_csv(main_path+'test_label_multi_10_classes.csv', low_memory=False)
-#train = pd.read_csv("../Dataset/train_1_pp3_multi.csv")
+train = pd.read_csv("../Dataset/train_1_pp3_multi.csv") # with the validation split
 #test = pd.read_csv("../Dataset/test_pp3_multi.csv")
 #train = pd.read_csv('../Dataset/Ton_IoT/train_pp_multi.csv')
-train = pd.read_csv('../Dataset/BoT-IoT/train_pp_multi.csv') # bot iot dataset
+#train = pd.read_csv('../Dataset/BoT-IoT/train_pp_multi.csv') # bot iot dataset
 #val = pd.read_csv('../Dataset/Ton_IoT/val_pp_multi.csv')
 #test = pd.read_csv('../Dataset/Ton_IoT/test_pp_multi.csv')
 print('dataset in shape of train: ', train.shape)
 #print('dataset in shape of tes: ', test.shape)
 # defining output fil name png and csv
-#Feature_importance_file_name = 'UNSW-NB15_feature_importance_XGBoost_multi_val_split'
+Feature_importance_file_name = 'UNSW-NB15_feature_importance_XGBoost_multi_val_split01'
 #Feature_importance_file_name = 'Ton_IoT_feature_importance_XGBoost_multi_val_split'
-Feature_importance_file_name = 'Bot_IoT_feature_importance_XGBoost_multi_val_split'
+#Feature_importance_file_name = 'Bot_IoT_feature_importance_XGBoost_multi_val_split'
 
 # split data into X an Y multiclass
-#target = 'attack_cat' # target values the UNSW-NB15
+target = 'attack_cat' # target values the UNSW-NB15
 #target = 'type' # target values the TON_IoT
-target = 'category' # target values the BOT_IoT
+#target = 'category' # target values the BOT_IoT
 x_train, y_train = train.drop([target], axis=1), train[target]
 #x_test, y_test = test.drop([target], axis=1), test[target]
 
