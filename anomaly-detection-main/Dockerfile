@@ -1,9 +1,9 @@
 FROM python:3.10-slim
 WORKDIR /usr/src
-COPY ./requerments.txt ./
+COPY requirements.txt ./
 RUN apt-get update && apt-get install -y git
 RUN pip install --upgrade pip \
-    && pip install --no-cache-dir --upgrade -r requerments.txt
+    && pip install --no-cache-dir --upgrade -r requirements.txt
 
 COPY .. ./anomaly-detection-main
 EXPOSE 8888
