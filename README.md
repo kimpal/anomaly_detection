@@ -2,7 +2,8 @@
 
 This branch contains only the code
 used in the XGBoost FS Method and its preprocessing and algorithms for model fit and testing
-Instructions to run it is in [anomaly-detection-main](https://github.com/kimpal/anomaly_detection/tree/XGBoost_FS_Method_only/anomaly-detection-main#readme) 
+If the entyer code form prevous method is desiered it is refered to the Maon branceh:
+[anomaly-detection-main](https://github.com/kimpal/anomaly_detection/tree/XGBoost_FS_Method_only/anomaly-detection-main#readme) 
 
 # Running XGBoost FS Selection Method Step Bay Step
 depending on Preprocessing for the UNSW-NB15 or TON-IoT and Bot-IoT binary / multi-class classification
