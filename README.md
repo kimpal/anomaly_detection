@@ -1,6 +1,6 @@
 # Correlation Method
 
-* The folder **Cor_code** contains the code for the correlation method.
+* The folder **Cor_Code** contains the code for the correlation method.
 * The folder **Dataset** within Cor_code should contain the datasets from UNSW-NB15, ToN_IoT and BoT-IoT.
 ### The datasets should have these names:
   #### BoT-IoT
