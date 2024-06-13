@@ -36,6 +36,9 @@ ETC_model = ExtraTreesClassifier()
 d = 3  
 t = 2
 
+score = False
+save = False
+Time_complex = False
 
 if d == 1:
     Dataset = "UNSW_NB15" # 21 42 m 22 42 m
@@ -43,12 +46,6 @@ if d == 2:
     Dataset = "TON_Train_Test" # 17 41 mb
 if d == 3:
     Dataset = "IoT_Botnet" # 12 16 m - 9 13 b
-
-
-
-score = False
-save = False
-Time_complex = False
 
 if t == 1:
     TYPE = "Binary"
