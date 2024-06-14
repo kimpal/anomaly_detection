@@ -28,7 +28,7 @@ depending on Preprocessing for the UNSW-NB15 or TON-IoT and Bot-IoT binary / mul
 1. IN this file, the following needs to be done:
    - dataset needs to be selected
    - target values depending on dataset and binary / multiclass classification 
-   - Feature importance score corresponding to the desired number of features discovered bay running the file form step 3 about
+   - Feature importance score corresponding to the desired number of features discovered bay running the file form step 3 above
    - make sure the desired parameters to test are set for the different algorithm 
 2. Start the code run and check that the code starts, then take a coffee brake...
 
