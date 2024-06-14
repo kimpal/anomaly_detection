@@ -23,7 +23,7 @@ depending on Preprocessing for the UNSW-NB15 or TON-IoT and Bot-IoT binary / mul
    the desired algorithm to fit and test is also selected in that python file.
 
 ### If wanted, step 4 code be skipped if it is desired to run al algorithms in one go
- Then run the file `XBoost_Feature_selection_automated_run_binary_multi_class_training.py`instead.
+ Then run the file `XBoost_FS_automated_run_binary_multi_class_training.py`instead.
  Be aware that it could take several days to complete the run of all models depending on Hardware and dataset.
 1. IN this file, the following needs to be done:
    - dataset needs to be selected
