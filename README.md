@@ -1,5 +1,8 @@
 # Correlation Method
 
+This project utilized ```python version 3.12.4``` as the coding language. To install the required packages, run the ```req.py```file. 
+
+
 * The folder **Cor_Code** contains the code for the correlation method.
 * The folder **Dataset** within Cor_code should contain the datasets from UNSW-NB15, ToN_IoT and BoT-IoT.
 ### The datasets should have these names:
