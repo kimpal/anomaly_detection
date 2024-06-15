@@ -1,0 +1,2 @@
+When downloading The TON_IoT dataset, please it in this folder.
+The TON_IoT Dataset official site is: https://research.unsw.edu.au/projects/toniot-datasets

@@ -1,0 +1,3 @@
+When downloading The BoT-IoT dataset, please it in this folder.
+The BoT-IoT Dataset official site is: https://research.unsw.edu.au/projects/bot-iot-dataset
+

@@ -1,0 +1,2 @@
+When downloading The UNSW-NB15 dataset, please it in this folder.
+The UNSW-NB15 Dataset official site is: https://research.unsw.edu.au/projects/unsw-nb15-dataset
